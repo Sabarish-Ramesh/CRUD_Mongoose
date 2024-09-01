@@ -1,0 +1,78 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mongodb CRUD Example</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+      /* General Reset */ body, h1, h3, ul, li, form, input, label, a { margin:
+      0; padding: 0; box-sizing: border-box; } /* Body Styling */ body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f9; color: #333; padding: 20px; display: flex;
+      flex-direction: column; align-items: center; } /* Heading Styles */ h1 {
+      font-size: 2.5rem; color: #1a1a2e; margin-bottom: 20px; } h3 { font-size:
+      1.75rem; color: #16213e; margin-bottom: 15px; } /* Form Styles */ form {
+      background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px;
+      margin-bottom: 30px; } label { display: block; margin-bottom: 8px;
+      font-weight: bold; color: #0f3460; } input[type="text"] { width: calc(100%
+      - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ddd;
+      border-radius: 4px; font-size: 1rem; } input[type="submit"] { width: 100%;
+      padding: 12px; background-color: #16213e; color: #ffffff; font-size: 1rem;
+      font-weight: bold; border: none; border-radius: 4px; cursor: pointer;
+      transition: background-color 0.3s ease; } input[type="submit"]:hover {
+      background-color: #1a1a2e; } /* List Styles */ ul { list-style: none;
+      width: 100%; max-width: 500px; padding: 0; } li { background-color:
+      #ffffff; margin-bottom: 10px; padding: 15px; border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display: flex; justify-content:
+      space-between; align-items: center; } /* Link Styles */ a {
+      text-decoration: none; color: #e94560; font-weight: bold; transition:
+      color 0.3s ease; } a:hover { color: #f76c6c; }
+
+    </style>
+
+  </head>
+  <body>
+
+    <h1>Mongodb CRUD Example</h1>
+    {{message}}
+    <br />
+    {{#if edit_id}}
+      <h3>Edit</h3>
+      <form method="post" action="/update_book/{{edit_id}}">
+        <label for="">Title</label>
+        <input type="text" name="title" value="{{edit_book.title}}" />
+        <label for="">Author</label>
+        <input type="text" name="author" value="{{edit_book.author}}" />
+        <input type="submit" />
+      </form><br /><br />
+    {{else}}
+
+      <h3>Create</h3>
+      <form method="post" action="/store_book">
+        <label for="">Title</label>
+        <input type="text" name="title" />
+        <label for="">Author</label>
+        <input type="text" name="author" />
+        <input type="submit" />
+      </form><br /><br />
+
+    {{/if}}
+
+    <ul>
+      {{#each books}}
+        <li>
+          {{this.title}}
+          -
+          {{this.author}}
+          <a href="/?edit_id={{this._id}}">Edit</a>
+          <a
+            href="/?delete_id={{this._id}}"
+            onclick="return confirm('Are you sure want to delete?')"
+          >Delete</a></li>
+      {{/each}}
+    </ul>
+
+  </body>
+</html>

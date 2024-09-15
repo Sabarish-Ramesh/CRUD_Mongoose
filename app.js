@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
+//to accept the user input 
 const bodyparser = require('body-parser');
+//template engine
 const exhbs = require('express-handlebars');
 const dbo = require('./db');
 const ObjectID = dbo.ObjectID;
@@ -8,10 +10,11 @@ const ObjectID = dbo.ObjectID;
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
-app.engine('hbs',exhbs.engine({layoutsDir:'views/',defaultLayout:"main",extname:"hbs"}))
-app.set('view engine','hbs');
-app.set('views','views');
-app.use(bodyparser.urlencoded({extended:true}));
+app.engine('hbs', exhbs.engine({ layoutsDir: 'views/', defaultLayout: "main", extname: "hbs" }))
+app.set('view engine', 'hbs');
+app.set('views', 'views');
+
+app.use(bodyparser.urlencoded({ extended: true }));
 
 app.get('/', async (req, res) => {
     let database = await dbo.getDatabase();
@@ -24,11 +27,11 @@ app.get('/', async (req, res) => {
 
     if (req.query.edit_id) {
         edit_id = req.query.edit_id;
-        edit_book = await collection.findOne({_id: ObjectID(edit_id)});
+        edit_book = await collection.findOne({ _id: ObjectID(edit_id) });
     }
 
     if (req.query.delete_id) {
-        await collection.deleteOne({_id: ObjectID(req.query.delete_id)});
+        await collection.deleteOne({ _id: ObjectID(req.query.delete_id) });
         return res.redirect('/?status=3');
     }
 
@@ -46,7 +49,7 @@ app.get('/', async (req, res) => {
             break;
     }
 
-    res.render('main', {message, books, edit_id, edit_book});
+    res.render('main', { message, books, edit_id, edit_book });
 });
 
 app.post('/store_book', async (req, res) => {
@@ -63,7 +66,7 @@ app.post('/update_book/:edit_id', async (req, res) => {
     let book = { title: req.body.title, author: req.body.author };
     let edit_id = req.params.edit_id;
 
-    await collection.updateOne({_id: ObjectID(edit_id)}, {$set: book});
+    await collection.updateOne({ _id: ObjectID(edit_id) }, { $set: book });
     return res.redirect('/?status=2');
 });
 

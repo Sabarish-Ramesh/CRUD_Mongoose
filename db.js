@@ -3,13 +3,13 @@ const MongoClient = mongodb.MongoClient;
 const ObjectID = mongodb.ObjectId;
 
 let database;
-
-async function getDatabase(){
+//instead mongoose used mongodb
+async function getDatabase() {
     const client = await MongoClient.connect('mongodb://127.0.0.1:27017');
     database = client.db('library');
 
     if (!database) {
-            console.log('Database not connected');
+        console.log('Database not connected');
     }
 
     return database;
@@ -17,5 +17,6 @@ async function getDatabase(){
 
 module.exports = {
     getDatabase,
+    //neeeds when we intract with _id
     ObjectID
 }
